@@ -13,7 +13,7 @@ module.exports = function (app) {
         bcrypt.hash(password, 10).then((hash) => {
           sequelize.User.create({ username, password: hash })
             .then((user) => {
-              res.redirect(`http://localhost:3000/?username=${user.username}`);
+              res.redirect(`/profile/${user.id}`);
             })
             .catch((err) => {
               console.error(err);
