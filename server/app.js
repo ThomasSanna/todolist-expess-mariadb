@@ -14,6 +14,7 @@ app
   .use(cors())
   .use(express.urlencoded({ extended: true }))
   .use(express.static(__dirname + "/public"))
+  .use(express.json())
   .use(session({
     secret: "blablabalbauheuhuhuaizheiuhuizheiu",
     resave: false,
@@ -24,7 +25,7 @@ app
 
 sequelize.initdb();
 
-require("./routes/register")(router);
+require("./routes/register")(app);
 require("./routes/logout")(app);
 require("./routes/getUser")(app);
 

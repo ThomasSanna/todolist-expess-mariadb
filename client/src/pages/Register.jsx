@@ -1,32 +1,24 @@
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
+import Axios from 'axios'
 
 const Register = () => {
-
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  
-  const handleClick = (e) => {
-    e.preventDefault();
-    fetch('http://localhost:5000/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
-    })
-    .then(res => res.json())
-    .then(data => {
-      console.log(data);
-      if (data.userCreated) {
-        window.location.href = 'http://localhost:3000/';
-      }
-    })
-    .catch(err => console.log(err));
+
+  const register = () => {
+    Axios.post('http://localhost:5000/register', {username: username, password: password})
+      .then((res) => {
+        console.log(res);
+      })
   }
+  
+
 
   return (
     <div>
         <h1>Register</h1>
-         <form onSubmit={handleClick}>
+         <form onSubmit={register}>
             <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
             <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
             <button type='submit'>Register</button>
