@@ -8,7 +8,7 @@ const Register = () => {
   const [password, setPassword] = useState('');
 
   const register = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     Axios.post('http://localhost:5000/register', {username: username, password: password})
       .then((res) => {
         console.log(res);

@@ -3,7 +3,6 @@ const cors = require("cors");
 const sequelize = require("./db/sequelize");
 const express = require("express"); // npm install express
 const session = require("express-session"); // npm install express-session
-const http = require("http");
 
 const PORT = process.env.PORT || 5000;
 const app = express();
@@ -20,10 +19,14 @@ app
   .use(express.static(__dirname + "/public"))
   .use(express.json())
   .use(session({
-    secret: "blablabalbauheuhuhuaizheiuhuizheiu",
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true }
+  secret: "blablabalbauheuhuhuaizheiuhuizheiu",
+  resave: true,
+  saveUninitialized: false,
+  rolling: true, // set rolling to false to prevent session from being reset on page refresh
+  cookie: { 
+    secure: false,
+    maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+  }
   }))
   .use(function (req, res, next) {
     res.locals.user = req.session.user;
@@ -40,13 +43,15 @@ require("./routes/getUser")(app);
 
 
 app.get("/", (req, res) => {
-  console.log('session', req.session);
+  console.log('session', req.session.user);
   if (req.session.user) {
-    return res.json({ username: req.session.user.username });
+    return res.json({ username: req.session });
   } else {
     return res.json({ username: null });
   }
 })
+
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

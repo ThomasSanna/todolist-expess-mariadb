@@ -16,10 +16,10 @@ function App() {
     axios.get('http://localhost:5000/', { withCredentials: true })
       .then((res) => {
         setUsername(res.data.username);
-        console.log('reponse app!', res);
+        console.log('Response app !', res.data.username);
       })
       .catch((err) => {
-        console.log('Erreur app', err);
+        console.log('Error app', err);
       })
   }, [])
 
