@@ -2,14 +2,19 @@ import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import Axios from 'axios'
 
+
 const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const register = () => {
+  const register = (e) => {
+    e.preventDefault();
     Axios.post('http://localhost:5000/register', {username: username, password: password})
       .then((res) => {
         console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
       })
   }
   

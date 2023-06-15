@@ -15,7 +15,7 @@ module.exports = function (app) {
           sequelize.User.create({ username, password: hash })
             .then((userCreated) => {
               req.session.user = userCreated;
-              return res.redirect('http://localhost:3000/');
+              return res.status(201).json({ message: "User created", user: userCreated });
             })
             .catch((err) => {
               console.error(err);

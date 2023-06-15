@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Register from "./pages/Register.jsx";
+import axios from "axios";
+import Register from "./pages/Register";
 import Login from "./pages/Login.jsx";
 import Profile from "./pages/Profile.jsx";
 import Home from "./pages/Home.jsx";
@@ -9,6 +10,20 @@ import Logout from "./pages/Logout.jsx";
 
 
 function App() {
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    axios.get('http://localhost:5000/', { withCredentials: true })
+      .then((res) => {
+        setUsername(res.data.username);
+        console.log('reponse app!', res);
+      })
+      .catch((err) => {
+        console.log('Erreur app', err);
+      })
+  }, [])
+
+
   return (
     <div className="App">
       <BrowserRouter>
@@ -18,6 +33,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/logout" element={<Logout />} />
+          <Route path='/username' element={<h1>{username || 'no username'}</h1>} />
         </Routes>
       </BrowserRouter>
     </div>
