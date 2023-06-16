@@ -10,6 +10,9 @@ const sequelize = new Sequelize('todolist', 'root', '', {
     }
 });
 
+
+const sequelizeSecond = sequelize
+
 const List = listModel(sequelize, Sequelize.DataTypes);
 const User = userModel(sequelize, Sequelize.DataTypes);
 
@@ -28,5 +31,5 @@ const initdb = () => {
 }
 
 module.exports = {
-    initdb, List, User
+    initdb, List, User, sequelizeSecond
 }

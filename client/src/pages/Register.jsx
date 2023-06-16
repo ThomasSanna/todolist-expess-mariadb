@@ -11,11 +11,11 @@ const Register = () => {
     e.preventDefault();
     Axios.post('http://localhost:5000/register', {username: username, password: password})
       .then((res) => {
-        console.log(res);
+        console.log("Register response", res);
         return res;
       })
       .catch((err) => {
-        console.log(err);
+        console.log("Register error", err);
         return err;
       })
   }

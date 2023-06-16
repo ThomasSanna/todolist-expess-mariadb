@@ -13,7 +13,7 @@ function App() {
   const [userId, setUserId] = useState("");
 
   useEffect(() => {
-    axios.get('http://localhost:5000/', { withCredentials: true })
+    axios.get('http://localhost:5000/getuser', { withCredentials: true })
       .then((res) => {
         setUserId(res.data);
         console.log('Response app !', res.data);

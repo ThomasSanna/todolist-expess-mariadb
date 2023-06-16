@@ -3,9 +3,16 @@ const cors = require("cors");
 const sequelize = require("./db/sequelize");
 const express = require("express"); // npm install express
 const session = require("express-session"); // npm install express-session
+const SequelizeStore = require("connect-session-sequelize")(session.Store);
 
 const PORT = process.env.PORT || 5000;
 const app = express();
+
+const sessionStore = new SequelizeStore({
+  db: sequelize.sequelizeSecond,
+  table: "Session",
+})
+sessionStore.sync();
 
 app.set('trust proxy', 1)
 
@@ -19,14 +26,15 @@ app
   .use(express.urlencoded({ extended: true }))
   .use(express.static(__dirname + "/public"))
   .use(express.json())
+
   .use(session({
-  secret: "blablabalbauheuhuhuaizheiuhuizheiu",
-  resave: true,
-  saveUninitialized: true,
-  rolling: false,
-  cookie: { 
-    maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
-  }
+    secret: "secret",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 1000 * 60 * 60 *24 * 7, // 1 week
+    },
+    store: sessionStore
   }))
 
 sequelize.initdb();
@@ -34,32 +42,10 @@ sequelize.initdb();
 require("./routes/register")(app);
 
 
-
-app.get("/", (req, res) => {
-  console.log('onGetSession', req.session);
-  if (req.session.userId) {
-    return res.json({
-      'UserId': req.session,
-      'Views': req.session.views,
-    });
-  } else {
-    return res.json({"id": "No id found"});
-  }
+// get user from sequelize session db
+app.get("/getuser", (req, res) => {
+  sequelize.Sessio
 })
-
-app.get('/test', (req, res, next) => {
-  if (req.session.views) {
-    req.session.views++
-    res.setHeader('Content-Type', 'text/html')
-    res.write('<p>views: ' + req.session.views + '</p>')
-    res.write('<p>expires in: ' + (req.session.cookie.maxAge / 1000) + 's</p>')
-    res.end()
-  } else {
-    req.session.views = 1
-    res.end('welcome to the session demo. refresh!')
-  }
-})
-
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
