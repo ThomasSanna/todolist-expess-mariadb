@@ -14,13 +14,12 @@ const List = listModel(sequelize, Sequelize.DataTypes);
 const User = userModel(sequelize, Sequelize.DataTypes);
 
 const initdb = () => {
-    return sequelize.sync({ force: true })
+    return sequelize.sync()
         .then(() => {
-
-            return List.sync({ force: true })
+            return List.sync()
         })
         .then(() => {
-            return User.sync({ force: true })
+            return User.sync()
         })
         .then(() => {
             console.log('Database & tables created!');

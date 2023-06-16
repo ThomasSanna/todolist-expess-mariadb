@@ -10,13 +10,13 @@ import Logout from "./pages/Logout.jsx";
 
 
 function App() {
-  const [username, setUsername] = useState("");
+  const [userId, setUserId] = useState("");
 
   useEffect(() => {
     axios.get('http://localhost:5000/', { withCredentials: true })
       .then((res) => {
-        setUsername(res.data.username);
-        console.log('Response app !', res.data.username);
+        setUserId(res.data);
+        console.log('Response app !', res.data);
       })
       .catch((err) => {
         console.log('Error app', err);
@@ -33,7 +33,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/logout" element={<Logout />} />
-          <Route path='/username' element={<h1>{username || 'no username'}</h1>} />
+          <Route path='/username' element={<h1>{userId || 'no username'}</h1>} />
         </Routes>
       </BrowserRouter>
     </div>
