@@ -33,9 +33,12 @@ app
   .use(session({
     secret: "secret",
     resave: false,
+    rolling: true,
     saveUninitialized: true,
     cookie: {
       maxAge: 1000 * 60 * 60 *24 * 7, // 1 week
+      sameSite: 'none',
+      secure: true
     },
     store: sessionStore
   }))
@@ -49,6 +52,7 @@ require("./routes/register")(app);
 // get user from sequelize session db
 app.get("/getuser", (req, res) => {
   console.log({ 'sessionID': req.sessionID });
+  console.log('req.session.userId', req.session.userId);
   sequelize.Session.findOne({ where: { data: req.sessionID } })
     .then(session => {
       console.log('====================================');
