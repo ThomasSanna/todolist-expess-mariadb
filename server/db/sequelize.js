@@ -1,6 +1,7 @@
 const { Sequelize } = require('sequelize');
 const listModel = require('../models/List');
 const userModel = require('../models/User');
+const sessionModel = require('../models/Session');
 
 const sequelize = new Sequelize('todolist', 'root', '', {
     dialect: 'mariadb',
@@ -15,14 +16,18 @@ const sequelizeSecond = sequelize
 
 const List = listModel(sequelize, Sequelize.DataTypes);
 const User = userModel(sequelize, Sequelize.DataTypes);
+const Session = sessionModel(sequelize, Sequelize.DataTypes);
 
 const initdb = () => {
-    return sequelize.sync()
+    return sequelize.sync({ force: true })
         .then(() => {
-            return List.sync()
+            return List.sync({ force: true })
         })
         .then(() => {
-            return User.sync()
+            return User.sync({ force: true })
+        })
+        .then(() => {
+            return Session.sync({ force: true })
         })
         .then(() => {
             console.log('Database & tables created!');
@@ -31,5 +36,5 @@ const initdb = () => {
 }
 
 module.exports = {
-    initdb, List, User, sequelizeSecond
+    initdb, List, User, Session, sequelizeSecond
 }

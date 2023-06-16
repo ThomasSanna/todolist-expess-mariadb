@@ -3,10 +3,6 @@ const bcrypt = require("bcrypt"); // npm install bcrypt
 
 module.exports = function (app) {
 
-  app.get("/register", (req, res) => {
-    res.redirect('http://localhost:3000/register')
-  });
-
   app.post("/register", (req, res) => {
     const { username, password } = req.body;
     if (!username) {
@@ -18,7 +14,6 @@ module.exports = function (app) {
           sequelize.User.create({ username, password: hash })
             .then((userCreated) => {
               req.session.userId = userCreated.id;
-              console.log('onRegisterSession: ', req.session);
               res.end()
             })
             .catch((err) => {
