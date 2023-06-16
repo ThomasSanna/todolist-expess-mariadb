@@ -4,7 +4,6 @@ const sequelize = require("./db/sequelize");
 const express = require("express"); // npm install express
 const session = require("express-session"); // npm install express-session
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
-const cookieParser = require("cookie-parser"); // npm install cookie-parser
 
 
 const PORT = process.env.PORT || 5000;
@@ -21,7 +20,6 @@ const sessionStore = new SequelizeStore({
 app.set('trust proxy', 1)
 
 app
-  .use(cookieParser())
   .use(bodyParser.urlencoded({ extended: false }))
   .use(bodyParser.json())
   .use(cors({
@@ -50,8 +48,8 @@ require("./routes/register")(app);
 
 // get user from sequelize session db
 app.get("/getuser", (req, res) => {
-  console.log({ 'sessionID': req.sessionID, 'cookie': req.cookies.PHPSESSID });
-  sequelize.Session.findOne({ where: { data: req.cookies.PHPSESSID } })
+  console.log({ 'sessionID': req.sessionID });
+  sequelize.Session.findOne({ where: { data: req.sessionID } })
     .then(session => {
       console.log('====================================');
       console.log({ 'session': session });
