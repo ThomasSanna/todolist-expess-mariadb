@@ -14,6 +14,8 @@ module.exports = function (app) {
           sequelize.User.create({ username, password: hash })
             .then((userCreated) => {
               req.session.userId = userCreated.id;
+              req.session.save();
+              res.json({ userCreated });
               res.end()
             })
             .catch((err) => {
